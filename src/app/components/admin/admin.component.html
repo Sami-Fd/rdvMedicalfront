@@ -1,0 +1,14 @@
+<div class="text-center mb-5">
+    <img src="../../../assets/Logo.png" alt="Image" height="50" class="mb-3">
+</div>
+<form name="form" (ngSubmit)="onSignIn(f)" #f="ngForm" novalidate>
+    <div>
+        <div class="max-w-20rem m-auto">
+            <label for="email" class="block text-900 font-medium mb-2">Email <span class="text-red-500">*</span></label>
+            <input ngModel id="email" type="email" pInputText class="w-full mb-3" name="email" required email="true" #email="ngModel" [(ngModel)]="data.email">
+            <label for="password" class="block text-900 font-medium mb-2">Password <span class="text-red-500">*</span></label>
+            <input ngModel id="password" type="password" pInputText class="w-full mb-3" name="password" required #password="ngModel" [(ngModel)]="data.password">
+            <button pButton pRipple label="Sign In" icon="pi pi-user" class="w-full" type="submit" [disabled]="f.invalid"></button>
+        </div>
+    </div>
+</form>

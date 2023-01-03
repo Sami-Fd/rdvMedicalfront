@@ -1,0 +1,149 @@
+
+<div class="px-4 py-5 md:px-6 lg:px-8">
+    <div class="grid">
+        <div class="col-12 md:col-6 lg:col-3">
+            <div class="surface-card shadow-2 p-3 border-round">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3">Orders</span>
+                        <div class="text-900 font-medium text-xl">152</div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
+                        <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
+                    </div>
+                </div>
+                <span class="text-green-500 font-medium">24 new </span>
+                <span class="text-500">since last visit</span>
+            </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-3">
+            <div class="surface-card shadow-2 p-3 border-round">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3">Revenue</span>
+                        <div class="text-900 font-medium text-xl">$2.100</div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-orange-100 border-round" style="width:2.5rem;height:2.5rem">
+                        <i class="pi pi-map-marker text-orange-500 text-xl"></i>
+                    </div>
+                </div>
+                <span class="text-green-500 font-medium">%52+ </span>
+                <span class="text-500">since last week</span>
+            </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-3">
+            <div class="surface-card shadow-2 p-3 border-round">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3">Customers</span>
+                        <div class="text-900 font-medium text-xl">28441</div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" style="width:2.5rem;height:2.5rem">
+                        <i class="pi pi-inbox text-cyan-500 text-xl"></i>
+                    </div>
+                </div>
+                <span class="text-green-500 font-medium">520  </span>
+                <span class="text-500">newly registered</span>
+            </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-3">
+            <div class="surface-card shadow-2 p-3 border-round">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3">Comments</span>
+                        <div class="text-900 font-medium text-xl">152 Unread</div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-purple-100 border-round" style="width:2.5rem;height:2.5rem">
+                        <i class="pi pi-comment text-purple-500 text-xl"></i>
+                    </div>
+                </div>
+                <span class="text-green-500 font-medium">85 </span>
+                <span class="text-500">responded</span>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isPatient || authService.isAdmin()">
+        <p-table [value]="items" *ngIf="!triggerForm">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Doctor Name</th>
+                    <th>Education</th>
+                    <th>Speciality</th>
+                    <th>Appointment Date</th>
+                    <th>Available Time</th>
+                    <th>Action</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item let-i>
+                <tr>
+                    <td>{{item.doctor[0].name}}</td>
+                    <td>{{item.doctor[0].degree}}</td>
+                    <td>{{item.doctor[0].speciality}}</td>
+                    <td>{{item.doctor_schedule_date | date}}</td>
+                    <td>{{item.doctor_schedule_start_time | date:'shortTime'}}-{{item.doctor_schedule_end_time | date:'shortTime'}}</td>
+                    <td *ngIf="!isLogged">
+                        <p-button label="Get Appointment" styleClass="p-button-sm" [routerLink]="'/auth'" [queryParams]="{type:'patient'}" ></p-button>
+                    </td>
+                    <td *ngIf="isLogged">
+                        <p-button label="Get Appointment" styleClass="p-button-sm" (click)="appointementDetails(item)"></p-button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        
+        <!-- appointement calender with button -->
+        
+        <div class="flex justify-content-center align-items-center gap-2" *ngIf="triggerForm">
+            <div>
+            <p-button icon="pi pi-arrow-left" (click)="triggerForm = false"></p-button>
+            </div>
+            <div class="col-12 md:col-6 lg:col-3">
+                <div class="surface-card shadow-2 p-3 border-round">
+                    <div class="flex justify-content-between mb-3">
+                        <div>
+                            <div class="text-900 font-medium text-xl">{{selectedDoctor.doctor[0].name}}</div>
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
+                            <p-avatar [image]="docImgUrl" styleClass="flex" shape="circle"></p-avatar>
+                        </div>
+                    </div>
+                    <p class="text-900 font-medium">Address: {{selectedDoctor.doctor[0].address}}</p>
+                    <p class="text-900">Phone: {{selectedDoctor.doctor[0].phone}}</p>
+                </div>
+            </div>
+            <div class="col-12 md:col-6 lg:col-3 h-15rem overflow-auto">
+                <div class="surface-card shadow-2 p-3 border-round " class="flex gap-2">
+                    <div>
+                        <div>{{selectedDoctor.doctor_schedule_date | date}}</div>
+                        <div *ngFor="let slot of selectedDoctor.timeSlot" class="my-2">
+                            <p-button styleClass="p-button-sm" (click)="bookAppointment(slot,selectedDoctor)">
+                                {{slot.time | date:'hh:mm a'}}
+                            </p-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        
+        <p-dialog header="Confirm Your appointement" [(visible)]="triggerValidationForm" [breakpoints]="{'960px': '75vw'}" [style]="{width: '50vw'}"
+            [draggable]="false" [resizable]="false">
+            <div class="flex gap-2 justify-content-between">
+                <div>
+                    <p>Doctor Name: {{selectedDoctor?.doctor[0].name}}</p>
+                    <p>Appointment Time: {{appointmentData.appointment_time | date}}</p>
+                </div>
+                <div>
+                    <p>Reason for Appointment:</p>
+                    <textarea rows="5" cols="30" pInputTextarea [autoResize]="true" [(ngModel)]="appointmentData.reason_for_appointment" required></textarea>
+                </div>
+            </div>
+            <ng-template pTemplate="footer">
+                <p-button (click)="triggerValidationForm=false" label="Cancel" styleClass="p-button"></p-button>
+                <p-button (click)="confirmAppointment()" label="Confirm" styleClass="p-button"></p-button>
+            </ng-template>
+        </p-dialog>
+        
+        
+    </div>
+</div>
+<p-toast position="top-right"></p-toast>

@@ -1,0 +1,8 @@
+<p-listbox *ngIf="showSideMenu" [listStyle]="{'min-height':'100vh'}" [options]="routesList" [(ngModel)]="selectedItem" optionLabel="name" optionValue="path" (onChange)="onRouteChange($event)">
+    <ng-template let-item pTemplate="item">
+        <div class="flex flex-row align-items-center justify-content-center">
+            <i class="pi" [ngClass]="item.icon"></i>
+            <span class="ml-2">{{item.name}}</span>
+        </div>
+    </ng-template>
+</p-listbox>

@@ -1,0 +1,12 @@
+<p-menubar>
+    <ng-template pTemplate="start">
+        <img src="../assets/Logo.png" width="150" height="40" class="mr-2">
+        <button (click)="emit()" pButton pRipple type="button" icon="pi pi-align-justify" class="p-button-rounded p-button-text"></button>
+    </ng-template>
+    <ng-template pTemplate="end">
+        <p-avatar image="http://localhost:3000/{{user[0].image}}" styleClass="mr-2" shape="circle"></p-avatar>
+        <button #btn type="button" pButton [label]="user[0].first_name || user[0].name" (click)="avatarMenu.toggle($event)" icon="pi pi-chevron-down" iconPos="right" class="p-button-text" styleClass="p-button-sm">
+        </button>
+        <p-tieredMenu #avatarMenu [model]="userMenu" [popup]="true"></p-tieredMenu>
+    </ng-template>
+</p-menubar>

@@ -1,0 +1,82 @@
+<p-toast position="top-right"></p-toast>
+<p-dialog [header]="isUpdate ? 'Update Schedule': 'Create Schedule'" [(visible)]="triggerScheduleForm" [breakpoints]="{'960px': '75vw'}"
+    [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+    <form name="form" (ngSubmit)="isUpdate ? updateSchedule(f) : addSchedule(f)" #f="ngForm" novalidate>
+        <div>
+            <div class="field col-12 flex flex-column">
+                <label for="scheduleDate">Schedule Date</label>
+                <p-calendar name="scheduleDate" inputId="scheduleDate" ngModel #scheduleDate="ngModel"
+                    [(ngModel)]="scheduleForm.doctor_schedule_date" dateFormat="dd-mm-yy"
+                    [required]="true" [minDate]="minDate"></p-calendar>
+            </div>
+            <div class="field col-12 flex flex-column">
+                <label for="startTime">Start Time</label>
+                <p-calendar name="startTime" inputId="startTime" ngModel #startTime="ngModel"
+                    [(ngModel)]="scheduleForm.doctor_schedule_start_time" [timeOnly]="true" hourFormat="24"
+                    [required]="true"></p-calendar>
+            </div>
+            <div class="field col-12 flex flex-column">
+                <label for="endTime">End Time</label>
+                <p-calendar name="endTime" inputId="endTime" ngModel #endTime="ngModel"
+                    [(ngModel)]="scheduleForm.doctor_schedule_end_time" [timeOnly]="true" hourFormat="24"
+                    [required]="true"></p-calendar>
+            </div>
+            <div class="field col-12 flex flex-column">
+                <label for="average">Average Schedule</label>
+                <input ngModel name="average" id="average" type="number" #average="ngModel"
+                    [(ngModel)]="scheduleForm.average_consulting_time" pInputText required>
+                <label for="status">Schedule Status: {{scheduleForm.status ? "active" : "inactive"}}</label>
+                <p-inputSwitch name="status" ngModel [(ngModel)]="scheduleForm.doctor_schedule_status" #status="ngModel" [required]="true"></p-inputSwitch>
+            </div>
+            <div class="flex gap-2 justify-content-between">
+                <p-button (click)="triggerScheduleForm=false" label="Cancel" styleClass="p-button"></p-button>
+            <button pButton pRipple label="Submit" icon="pi pi-send" type="submit"
+                [disabled]="f.invalid"></button>
+            </div>
+        </div>
+    </form>
+</p-dialog>
+<p-dialog header="Delete Schedule" [(visible)]="triggerDialog" [breakpoints]="{'960px': '75vw'}" [style]="{width: '50vw'}"
+    [draggable]="false" [resizable]="false">
+    <div class="flex gap-2 justify-content-between">
+        <div>
+            <p>Are you sure you want to delete this schedule?</p>
+            <p>Date :{{scheduleForm?.doctor_schedule_date | date}}</p>
+            <p>Start Time :{{scheduleForm?.doctor_schedule_start_time}}</p>
+            <p>End Time :{{scheduleForm?.doctor_schedule_end_time}}</p>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button (click)="triggerDialog=false" label="Cancel" styleClass="p-button"></p-button>
+        <p-button (click)="deleteSchedule(scheduleForm._id)" label="Confirm" styleClass="p-button-danger"></p-button>
+    </ng-template>
+</p-dialog>
+<div class="flex justify-content-end mb-2">
+<p-button (click)="triggerScheduleForm=true" label="Add Schedule" styleClass="p-button"></p-button>
+</div>
+<p-table [value]="items">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Schedule Date</th>
+            <th>Schedule Start Time</th>
+            <th>Schedule End Time</th>
+            <th>Average</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i>
+        <tr>
+            <td>{{item.doctor_schedule_date | date}}</td>
+            <td>{{item.doctor_schedule_start_time | date:'shortTime'}}</td>
+            <td>{{item.doctor_schedule_end_time | date:'shortTime'}}</td>
+            <td>{{item.average_consulting_time}}</td>
+            <td>{{item.doctor_schedule_status ? "Active" : "Inactive"}}</td>
+            <td class="flex justify-content-evenly">
+                <!-- <button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded"></button> -->
+                <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded" (click)="triggerForm(item, 'update')"></button>
+                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded" (click)="triggerForm(item, 'remove')"></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

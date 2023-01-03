@@ -1,0 +1,82 @@
+<div class="flex justify-content-center align-items-center m-6">
+    <p-selectButton [options]="userType" (click)="onTypeChange()" [(ngModel)]="type" optionLabel="name" optionValue="type"></p-selectButton>
+</div>
+<div class="text-center mb-5">
+    <img src="../../../assets/Logo.png" alt="Image" height="50" class="mb-3">
+    <div class="text-900 text-3xl font-medium mb-3" *ngIf="authOption.code">Welcome Back</div>
+    <div class="text-900 text-3xl font-medium mb-3" *ngIf="!authOption.code">Create Your Account</div>
+    <p-selectButton [options]="authOptions" [(ngModel)]="authOption" optionLabel="name"></p-selectButton>
+</div>
+<form name="form" (ngSubmit)="onSignIn(f)" #f="ngForm" novalidate>
+    <div *ngIf="authOption.code">
+        <div class="max-w-20rem m-auto">
+            <label for="email" class="block text-900 font-medium mb-2">Email <span class="text-red-500">*</span></label>
+            <input ngModel id="email" type="email" pInputText class="w-full mb-3" name="email" required email="true" #email="ngModel" [(ngModel)]="data.email">
+            <label for="password" class="block text-900 font-medium mb-2">Password <span class="text-red-500">*</span></label>
+            <input ngModel id="password" type="password" pInputText class="w-full mb-3" name="password" required #password="ngModel" [(ngModel)]="data.password">
+            <button pButton pRipple label="Sign In" icon="pi pi-user" class="w-full" type="submit" [disabled]="f.invalid"></button>
+        </div>
+    </div>
+</form>
+<form name="form" (ngSubmit)="onSignUp(fup)" #fup="ngForm" novalidate>
+<div *ngIf="!authOption.code" class="m-auto w-6 ">
+        <div class="flex flex-wrap gap-2 justify-content-center mb-2">
+            <div>
+                <label for="email" class="block text-900 font-medium mb-2">Email <span class="text-red-500">*</span></label>
+                <input ngModel name="email" id="email" type="email" #email="ngModel" [(ngModel)]="data.email" pInputText class="w-full mb-3" required email="true">
+            </div>
+            <div>
+                <label for="password" class="block text-900 font-medium mb-2">Password <span class="text-red-500">*</span></label>
+                <input ngModel id="password" name="password" type="password" pInputText class="w-full mb-3" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" #name="ngModel" [(ngModel)]="data.password" required>
+            </div>
+            <div *ngIf="type == 'patient'">
+                <label for="firstName" class="block text-900 font-medium mb-2">First Name <span class="text-red-500">*</span></label>
+                <input ngModel id="firstName" type="text" name="first_name" pInputText class="w-full mb-3" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" #name="ngModel" [(ngModel)]="data.first_name" required>
+            </div>
+            <div *ngIf="type == 'patient'">
+                <label for="lastName" class="block text-900 font-medium mb-2">Last Name <span class="text-red-500">*</span></label>
+                <input ngModel id="lastName" type="text" name="last_name" pInputText class="w-full mb-3" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" #name="ngModel" [(ngModel)]="data.last_name" required>
+            </div>
+            <div *ngIf="type == 'patient'">
+                <label for="gender" class="block text-900 font-medium mb-2">Gender <span class="text-red-500">*</span></label>
+                <p-dropdown ngModel [(ngModel)]="data.gender" inputId="dropdown" name="gender" [options]="genders" optionLabel="name" optionValue="code" placeholder="Gender" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" ></p-dropdown>
+            </div>
+            <div *ngIf="type == 'doctor'">
+                <label for="name" class="block text-900 font-medium mb-2">Full Name <span class="text-red-500">*</span></label>
+                <input ngModel id="name" type="text" name="name" pInputText class="w-full mb-3" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" #name="ngModel" [(ngModel)]="data.name" required>
+            </div>
+            <div *ngIf="type == 'doctor'">
+                <label for="speciality" class="block text-900 font-medium mb-2">Speciality <span class="text-red-500">*</span></label>
+                <input  ngModel id="speciality" type="text" name="speciality" pInputText class="w-full mb-3" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" #name="ngModel" [(ngModel)]="data.speciality" required>
+            </div>
+            <div *ngIf="type == 'doctor'">
+                <label for="degree" class="block text-900 font-medium mb-2">Degree <span class="text-red-500">*</span></label>
+                <input id="degree" ngModel type="text" name="degree" pInputText class="w-full mb-3" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" #name="ngModel" [(ngModel)]="data.degree" required>
+            </div>
+            <div *ngIf="type == 'doctor'">
+                <label for="status" class="block text-900 font-medium mb-2">Status <span class="text-red-500">*</span></label>
+                <p-inputSwitch id="status" ngModel type="text" name="status" class="w-full mb-3" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" #name="ngModel" [(ngModel)]="data.status" required></p-inputSwitch>
+            </div>
+            <div>
+                <label for="address" class="block text-900 font-medium mb-2">Address <span class="text-red-500">*</span></label>
+                <input ngModel id="address" type="text" name="address" pInputText class="w-full mb-3" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" #name="ngModel" [(ngModel)]="data.address" required>
+            </div>
+            <div>
+                <label for="phone" class="block text-900 font-medium mb-2">Phone <span class="text-red-500">*</span></label>
+                <input ngModel id="phone" type="number" pInputText name="phone" class="w-full mb-3" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" #name="ngModel" [(ngModel)]="data.phone" required>
+            </div>
+            <div>
+                    <label for="dateOfBirth" class="block text-900 font-medium mb-2">Date Of Birth <span class="text-red-500">*</span></label>
+                    <p-calendar name="dateOfBirth" ngModel id="dateOfBirth" [showIcon]="true" inputId="icon" [ngClass]="{ 'is-invalid': fup.submitted && name.invalid }" #name="ngModel" [(ngModel)]="data.dateOfBirth" [required]="true"></p-calendar>
+            </div>
+            <div>
+                <label for="avatar" class="block text-900 font-medium mb-2">Photo</label>
+                <p-fileUpload name="avatar" [customUpload]="true" (uploadHandler)="onBasicUpload($event)" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" [auto]="true"></p-fileUpload>
+            </div>
+        </div>
+        <div class="flex justify-content-center align-items-center">
+            <button pButton pRipple label="Sign Up" icon="pi pi-user" class="w-6" type="submit" [disabled]="fup.invalid"></button>
+        </div>
+    </div>    
+</form>
+<p-toast position="top-right"></p-toast>

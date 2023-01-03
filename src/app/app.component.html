@@ -1,0 +1,29 @@
+<app-header *ngIf="authService.isLogged()" (toggle)="toggle()"></app-header>
+
+<div class="flex w-full justify-content-center p-2">
+        <div class="">
+            <app-sidebar [showSideMenu]="leftOpened" *ngIf="authService.isLogged()"></app-sidebar>
+        </div>
+        <div class="w-full p-2">
+            <router-outlet></router-outlet>
+        </div>
+</div>
+
+<!-- <div class="flex w-full my-2" *ngIf="isLogged()">
+    <p-listbox *ngIf="showMenu" [listStyle]="{'min-height':'100vh'}" [options]="routesList" [(ngModel)]="selectedItem" optionLabel="name" optionValue="path" (onChange)="onRouteChange($event)">
+        <ng-template let-item pTemplate="item">
+            <div class="flex flex-row align-items-center justify-content-center">
+                <i class="pi" [ngClass]="item.icon"></i>
+                <span class="ml-2">{{item.name}}</span>
+            </div>
+        </ng-template>
+    </p-listbox>
+    <div class="w-full mx-1 bg-white border-round flex flex-column py-5"> 
+        <router-outlet class="w-full"></router-outlet>
+    </div>
+</div> 
+
+<div *ngIf="!isLogged()" class="w-full min-h-screen bg-white p-2 flex flex-column align-items-center justify-content-center">
+    <router-outlet class="w-full"></router-outlet>
+</div>
+-->

@@ -1,0 +1,133 @@
+<p-table [value]="items" *ngIf="!triggerForm">
+    <ng-template pTemplate="header">
+        <tr>
+            <th *ngIf="isDoctor">Patient Name</th>
+            <th *ngIf="isPatient">Doctor Name</th>
+            <th>Appintment Time</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i>
+        <tr>
+            <td *ngIf="isDoctor">
+                <img src="http://localhost:3000/{{item.patient_id.image}}" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
+                {{item.patient_id.first_name}} {{item.patient_id.last_name}}
+            </td>
+            <td *ngIf="isPatient">
+                <img src="http://localhost:3000/{{item.doctor_id.image}}" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
+                {{item.doctor_id.name}}
+            </td>
+            <td>{{item.appointment_time | date:'medium'	}}</td>
+            <td>{{item.reason_for_appointment}}</td>
+            <td><span class="border-round p-1 text-white appointment-status {{item.status}}">{{item.status}}</span></td>
+            <td class="flex justify-content-evenly">
+                <button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded" (click)="triggerDialog(item,'details')"></button>
+                <button *ngIf="isDoctor" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded" (click)="triggerDialog(item, 'update')"></button>
+                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded" (click)="triggerDialog(item,'cancel')"></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<!-- appointement calender with button -->
+<!-- <div class="flex justify-content-center align-items-center gap-2" *ngIf="triggerForm">
+    <div class="col-12 md:col-6 lg:col-3">
+        <div class="surface-card shadow-2 p-3 border-round">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <div class="text-900 font-medium text-xl">{{selectedDoctor.name}}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-purple-100 border-round" style="width:2.5rem;height:2.5rem">
+                    <p-avatar image="../../assets/Logo.PNG" styleClass="mr-2" shape="circle"></p-avatar>
+                </div>
+            </div>
+            <p class="text-900 font-medium">Address: {{selectedDoctor.address}}</p>
+            <p class="text-900">Phone: {{selectedDoctor.phone}}</p>
+        </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3 h-15rem overflow-auto">
+        <div class="surface-card shadow-2 p-3 border-round " class="flex gap-2">
+            <div *ngFor="let schedule of selectedDoctor.schedules">
+                <div>{{schedule.doctor_schedule_date}}</div>
+                <div *ngFor="let slot of schedule.timeSlot" class="my-2">
+                    <p-button [label]="slot.time" styleClass="p-button-sm" (click)="bookAppointment(slot,schedule)"></p-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+<-- appointment form -->
+<p-dialog header="Update appointment" [(visible)]="triggerUpdateForm" [breakpoints]="{'960px': '75vw'}" [style]="{width: '50vw'}"
+    [draggable]="false" [resizable]="false">
+    <div class="flex gap-2 justify-content-between">
+        <div>
+            <p>Doctor Name: {{selectedAppointment?.doctor_schedule_id?.doctor[0]?.name}}</p>
+            <p>Patient Name : {{selectedAppointment?.patient_id?.first_name}} {{selectedAppointment?.patient_id?.last_name}}</p>
+            <p>Appointment Time: {{selectedAppointment?.appointment_time | date:'medium'}}</p>
+        </div>
+        <div>
+            <p>Patient come to Hospital</p>
+            <p-inputSwitch [ngModel]="selectedAppointment?.patient_come_into_hospital" (ngModelChange)="selectedAppointment.patient_come_into_hospital = $event"></p-inputSwitch>
+            <p>Status</p>
+            <p-dropdown [options]="status" [ngModel]="selectedAppointment?.status" (ngModelChange)="selectedAppointment.status = $event" optionLabel="label" optionValue="value"></p-dropdown>
+            <p>Comment</p>
+            <textarea rows="5" cols="30" pInputTextarea [autoResize]="true" [ngModel]="selectedAppointment?.doctor_comment" (ngModelChange)="selectedAppointment.doctor_comment = $event"></textarea>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button (click)="triggerUpdateForm=false" label="Cancel" styleClass="p-button"></p-button>
+        <p-button (click)="appointmentUpdate(selectedAppointment)" label="Confirm" styleClass="p-button"></p-button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [header]="triggerAppointmentDetails ? 'Appointment Details' : 'Appointment Cancel'" [(visible)]="triggerAppointmentDetails || triggerAppointmentCancel" [breakpoints]="{'960px': '75vw'}" [style]="{width: '50vw'}"
+    [draggable]="false" [resizable]="false">
+        <div *ngIf="isPatient">
+            <img src="http://localhost:3000/{{selectedAppointment?.doctor_id?.image}}" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
+            <p>Doctor Name: {{selectedAppointment?.doctor_id?.name}}</p>
+            <p>Degree: {{selectedAppointment?.doctor_id?.degree}}</p>
+            <p>Speciality: {{selectedAppointment?.doctor_id?.speciality}}</p>
+            <p>Address: {{selectedAppointment?.doctor_id?.address}}</p>
+            <p>Phone: {{selectedAppointment?.doctor_id?.phone}}</p>
+            <p>Appointment Time: {{selectedAppointment?.appointment_time | date:'medium'}}</p>
+        </div>
+        <div *ngIf="isDoctor">
+            <img src="http://localhost:3000/{{selectedAppointment?.patient_id?.image}}" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
+            <p>Patient Name: {{selectedAppointment?.patient_id?.first_name}} {{selectedAppointment?.patient_id?.last_name}}</p>
+            <p>Address: {{selectedAppointment?.patient_id?.address}}</p>
+            <p>Phone: {{selectedAppointment?.patient_id?.phone}}</p>
+            <p>Appointment Time: {{selectedAppointment?.appointment_time | date:'medium'}}</p>
+        </div>
+        <div *ngIf="authService.isAdmin()" class="flex justify-content-between">
+            <div>
+            <img src="http://localhost:3000/{{selectedAppointment?.doctor_id?.image}}" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
+            <p>Doctor Name: {{selectedAppointment?.doctor_id?.name}}</p>
+            <p>Degree: {{selectedAppointment?.doctor_id?.degree}}</p>
+            <p>Speciality: {{selectedAppointment?.doctor_id?.speciality}}</p>
+            <p>Address: {{selectedAppointment?.doctor_id?.address}}</p>
+            <p>Phone: {{selectedAppointment?.doctor_id?.phone}}</p>
+            </div>
+            <div>
+            <img src="http://localhost:3000/{{selectedAppointment?.patient_id?.image}}" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
+            <p>Patient Name: {{selectedAppointment?.patient_id?.first_name}} {{selectedAppointment?.patient_id?.last_name}}</p>
+            <p>Address: {{selectedAppointment?.patient_id?.address}}</p>
+            <p>Phone: {{selectedAppointment?.patient_id?.phone}}</p>
+            <p>Appointment Time: {{selectedAppointment?.appointment_time | date:'medium'}}</p>
+            </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button (click)="triggerAppointmentDetails=false" label="Cancel" styleClass="p-button" *ngIf="triggerAppointmentDetails"></p-button>
+        <p-button (click)="appointmentCancel(selectedAppointment)" label="Cancel Appointment" styleClass="p-button-danger" *ngIf="triggerAppointmentCancel"></p-button>
+    </ng-template>
+</p-dialog>
+
+<!-- <p-dialog header="Appointment Cancel" [(visible)]="triggerAppointmentCancel" [style]="{width: '50vw'}">
+    <p>are you sure want to delete this Appointment ?</p>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="appointmentCancel(item)" label="Ok" styleClass="p-button-danger"></p-button>
+    </ng-template>
+</p-dialog> -->
+
+<p-toast position="top-right"></p-toast>

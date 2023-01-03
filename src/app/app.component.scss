@@ -1,0 +1,14 @@
+.appointment-status{
+    &.pending{
+        color: #f0ad4e;
+    }
+    &.confirmed{
+        color: #5cb85c;
+    }
+    &.cancelled{
+        color: #d9534f;
+    }
+    &.completed{
+        color: #5bc0de;
+    }
+}

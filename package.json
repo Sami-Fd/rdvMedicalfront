@@ -2,9 +2,9 @@
   "name": "appointement",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
+    "ng": "node --max_old_space_size=8000 ./node_modules/.bin/ng",
     "start": "ng serve",
-    "build": "ng build --max_old_space_size=4096",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

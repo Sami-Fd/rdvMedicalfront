@@ -4,6 +4,7 @@ import { AuthService } from "src/app/services/auth/auth.service";
 import {MessageService} from 'primeng/api';
 import { ScheduleService } from "src/app/services/schedule/schedule.service";
 import { AppointmentService } from "src/app/services/appointment/appointment.service";
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class HomeComponent {
     private messageService: MessageService,
     private router: Router
   ) {}
+  env: any = environment;
   items: any;
   appointmentData: any = {};
   isLogged: boolean = false;

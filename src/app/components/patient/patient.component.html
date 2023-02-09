@@ -14,7 +14,7 @@
     <ng-template pTemplate="body" let-item let-i>
         <tr>
             <td>
-                <img src="http://localhost:3000/{{item.doctor_id.image}}" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
+                <img [src]="env.Static_URL + item.doctor_id.image" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
                 {{item.doctor_id.name}}
             </td>
             <td>{{item.doctor_id.degree}}</td>

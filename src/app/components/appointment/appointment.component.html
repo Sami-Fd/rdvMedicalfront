@@ -12,11 +12,11 @@
     <ng-template pTemplate="body" let-item let-i>
         <tr>
             <td *ngIf="isDoctor">
-                <img src="http://localhost:3000/{{item.patient_id.image}}" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
+                <img [src]="env.Static_URL+item.patient_id.image" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
                 {{item.patient_id.first_name}} {{item.patient_id.last_name}}
             </td>
             <td *ngIf="isPatient">
-                <img src="http://localhost:3000/{{item.doctor_id.image}}" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
+                <img [src]="env.Static_URL+item.doctor_id.image" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
                 {{item.doctor_id.name}}
             </td>
             <td>{{item.appointment_time | date:'medium'	}}</td>

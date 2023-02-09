@@ -19,6 +19,7 @@ export class AppointmentComponent {
     private messageService: MessageService,
     private router: Router
   ) {}
+  env:any = environment;
   items: any;
   appointmentData: any = {};
   isLogged: boolean = false;

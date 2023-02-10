@@ -15,7 +15,8 @@ export class DoctorComponent {
     private messageService: MessageService,
     private doctorService: DoctorService,
     private authService: AuthService
-  ) {}
+  ) {
+  }
 
   isUpdate: boolean = false;
   items: any;
@@ -46,6 +47,13 @@ export class DoctorComponent {
     }
   }
 
+  modelChange(event: any) {
+    this.scheduleForm.doctor_schedule_date = event;
+    this.scheduleForm.doctor_schedule_start_time = event;
+    this.scheduleForm.doctor_schedule_end_time = event;
+    console.log(this.scheduleForm);
+  }
+
   triggerForm(item:any, type:string) {
     console.log(item, type);
     if(type == 'update') {
@@ -65,12 +73,12 @@ export class DoctorComponent {
   addSchedule(f: any) {
     if(f.invalid) return
     console.log("addSchedule", this.scheduleForm);
-    this.scheduleService.createSchedule(this.scheduleForm).subscribe((data:any) => {
+    /*this.scheduleService.createSchedule(this.scheduleForm).subscribe((data:any) => {
       console.log(data);
       this.messageService.add({severity:'success', summary:'Service Message', detail: data.message});
       this.triggerScheduleForm = false;
       this.ngOnInit();
-    });
+    });*/
   }
 
   updateSchedule(f: any) {

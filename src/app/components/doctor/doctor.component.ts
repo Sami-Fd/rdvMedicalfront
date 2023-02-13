@@ -47,21 +47,14 @@ export class DoctorComponent {
     }
   }
 
-  modelChange(event: any) {
-    this.scheduleForm.doctor_schedule_date = event;
-    this.scheduleForm.doctor_schedule_start_time = event;
-    this.scheduleForm.doctor_schedule_end_time = event;
-    console.log(this.scheduleForm);
-  }
-
   triggerForm(item:any, type:string) {
     console.log(item, type);
     if(type == 'update') {
       this.isUpdate = true;
       this.triggerScheduleForm = true;
       item.doctor_schedule_date = new Date(item.doctor_schedule_date);
-      item.doctor_schedule_start_time = new Date(item.doctor_schedule_start_time);
-      item.doctor_schedule_end_time = new Date(item.doctor_schedule_end_time);
+      item.doctor_schedule_start_time = new Date(item.doctor_schedule_date.setHours(item.doctor_schedule_start_time.getHours(),item.doctor_schedule_start_time.getMinutes()));
+      item.doctor_schedule_end_time = new Date(item.doctor_schedule_date.setHours(item.doctor_schedule_end_time.getHours(),item.doctor_schedule_end_time.getMinutes()));
       this.scheduleForm = item;
     }
     if(type == 'remove') {
@@ -72,6 +65,9 @@ export class DoctorComponent {
 
   addSchedule(f: any) {
     if(f.invalid) return
+    this.scheduleForm.doctor_schedule_date = new Date(this.scheduleForm.doctor_schedule_date);
+    this.scheduleForm.doctor_schedule_start_time = new Date(this.scheduleForm.doctor_schedule_date.setHours(this.scheduleForm.doctor_schedule_start_time.getHours(),this.scheduleForm.doctor_schedule_start_time.getMinutes()))
+    this.scheduleForm.doctor_schedule_end_time = new Date(this.scheduleForm.doctor_schedule_date.setHours(this.scheduleForm.doctor_schedule_end_time.getHours(),this.scheduleForm.doctor_schedule_end_time.getMinutes()));
     console.log("addSchedule", this.scheduleForm);
     this.scheduleService.createSchedule(this.scheduleForm).subscribe((data:any) => {
       console.log(data);

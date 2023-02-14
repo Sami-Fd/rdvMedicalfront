@@ -53,17 +53,19 @@ export class DoctorComponent {
       this.isUpdate = true;
       this.triggerScheduleForm = true;
       item.doctor_schedule_date = new Date(item.doctor_schedule_date);
-      item.doctor_schedule_start_time = new Date(item.doctor_schedule_date.setHours(item.doctor_schedule_start_time.getHours(),item.doctor_schedule_start_time.getMinutes()));
-      item.doctor_schedule_end_time = new Date(item.doctor_schedule_date.setHours(item.doctor_schedule_end_time.getHours(),item.doctor_schedule_end_time.getMinutes()));
+      item.doctor_schedule_start_time = new Date(item.doctor_schedule_date.setHours(new Date(item.doctor_schedule_start_time).getHours(),new Date(item.doctor_schedule_start_time).getMinutes()));
+      item.doctor_schedule_end_time = new Date(item.doctor_schedule_date.setHours(new Date(item.doctor_schedule_end_time).getHours(),new Date(item.doctor_schedule_end_time).getMinutes()));
       this.scheduleForm = item;
     }
     if(type == 'remove') {
       this.triggerDialog = true;
       this.scheduleForm = item;
     }
+    console.log(this.isUpdate);
   }
 
   addSchedule(f: any) {
+    this.isUpdate = false;
     if(f.invalid) return
     this.scheduleForm.doctor_schedule_date = new Date(this.scheduleForm.doctor_schedule_date);
     this.scheduleForm.doctor_schedule_start_time = new Date(this.scheduleForm.doctor_schedule_date.setHours(this.scheduleForm.doctor_schedule_start_time.getHours(),this.scheduleForm.doctor_schedule_start_time.getMinutes()))
@@ -74,6 +76,7 @@ export class DoctorComponent {
       this.messageService.add({severity:'success', summary:'Service Message', detail: data.message});
       this.triggerScheduleForm = false;
       this.ngOnInit();
+      this.scheduleForm = {};
     });
   }
 
@@ -84,13 +87,18 @@ export class DoctorComponent {
       doctor_schedule_date: this.scheduleForm.doctor_schedule_date,
       doctor_schedule_start_time: this.scheduleForm.doctor_schedule_start_time,
       doctor_schedule_end_time: this.scheduleForm.doctor_schedule_end_time,
+      average_consulting_time: this.scheduleForm.average_consulting_time,
+      timeSlot: this.scheduleForm.timeSlot,
       doctor_schedule_status: this.scheduleForm.doctor_schedule_status
     }
+    console.log(data);
     this.scheduleService.updateSchedule(this.scheduleForm._id, data).subscribe((data:any) => {
       console.log(data);
       this.messageService.add({severity:'success', summary:'Service Message', detail: data.message});
       this.triggerScheduleForm = false;
       this.scheduleForm = {};
+      this.isUpdate = false;
+      this.ngOnInit();
     });
   }
 

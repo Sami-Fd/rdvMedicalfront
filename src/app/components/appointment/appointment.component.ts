@@ -30,6 +30,7 @@ export class AppointmentComponent {
   triggerValidationForm: boolean = false;
   triggerAppointmentDetails: boolean = false;
   triggerAppointmentCancel: boolean = false;
+  dialogAppointment: boolean = false;
   selectedDoctor: any;
   selectedAppointment: any = {};
   status: any;  
@@ -60,7 +61,10 @@ export class AppointmentComponent {
     }
     if(dialog == "details"){
       this.selectedAppointment = item;
+      this.triggerAppointmentCancel = false;
       this.triggerAppointmentDetails = true;
+      this.dialogAppointment = true;
+      console.log(this.triggerAppointmentCancel,this.triggerAppointmentDetails);
     }
     if(dialog == "validation"){
       this.selectedAppointment = item;
@@ -68,7 +72,10 @@ export class AppointmentComponent {
     }
     if(dialog == "cancel"){
       this.selectedAppointment = item;
+      this.triggerAppointmentDetails = false;
       this.triggerAppointmentCancel = true;
+      this.dialogAppointment = true;
+      console.log(this.triggerAppointmentCancel,this.triggerAppointmentDetails);
     }
   }
   appointmentDetails(item: any,ft:boolean) {
@@ -112,6 +119,7 @@ export class AppointmentComponent {
     this.appointmentService.deleteAppointment(id).subscribe((data:any) => {
       if (data){
         this.triggerAppointmentCancel = false;
+        this.dialogAppointment = false;
         this.messageService.add({severity:'success', summary: 'Success', detail: data.message});
         this.scheduleService.updateSchedule(item.doctor_schedule_id._id, {timeSlot: item.doctor_schedule_id.timeSlot}).subscribe((data:any) => {
           console.log(data);
@@ -120,6 +128,8 @@ export class AppointmentComponent {
       }
     });
   }
+
+  
 
   appointmentUpdate(item:any) {
     console.log(item);

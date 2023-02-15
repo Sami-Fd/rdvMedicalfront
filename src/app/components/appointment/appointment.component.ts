@@ -44,6 +44,7 @@ export class AppointmentComponent {
     this.appointmentService.getAllAppointment().subscribe((data:any) => {
       console.log(data);
       this.items = data.appointment;
+      localStorage.setItem("appointment Number", JSON.stringify(this.items.length));
     });
     if (this.authService.isLogged()) {
       this.isLogged = true;

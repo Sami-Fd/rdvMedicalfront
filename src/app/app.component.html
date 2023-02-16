@@ -1,5 +1,16 @@
 <app-header *ngIf="authService.isLogged()" (toggle)="toggle()"></app-header>
-
+<div *ngIf="!authService.isLogged()" class="info">
+      <div class="ml-2">
+            <p>Doctor account for test purposes</p>
+            <p>Email: doctor@gmail.com</p>
+            <p>Password: 123456</p>
+        </div>
+        <div class="ml-2">
+            <p>Patient account for test purposes</p>
+            <p>Email: patient@gmail.com</p>
+            <p>Password: 123456</p>
+        </div>
+</div>
 <div class="flex w-full justify-content-center p-2">
         <div class="">
             <app-sidebar [showSideMenu]="leftOpened" *ngIf="authService.isLogged()"></app-sidebar>
@@ -8,7 +19,9 @@
             <router-outlet></router-outlet>
         </div>
 </div>
-
+<div class="footerr">
+    &copy; 2023 @Github:Sami-fd
+</div>
 <!-- <div class="flex w-full my-2" *ngIf="isLogged()">
     <p-listbox *ngIf="showMenu" [listStyle]="{'min-height':'100vh'}" [options]="routesList" [(ngModel)]="selectedItem" optionLabel="name" optionValue="path" (onChange)="onRouteChange($event)">
         <ng-template let-item pTemplate="item">

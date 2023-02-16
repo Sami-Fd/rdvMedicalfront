@@ -5,8 +5,8 @@
                     <th>Doctor Name</th>
                     <th>Education</th>
                     <th>Speciality</th>
-                    <th>Appointment Date</th>
-                    <th>Available Time</th>
+                    <!-- <th>Appointment Date</th>
+                    <th>Available Time</th> -->
                     <th>Action</th>
                 </tr>
             </ng-template>
@@ -18,8 +18,8 @@
                     </td>
                     <td>{{item.doctor[0].degree}}</td>
                     <td>{{item.doctor[0].speciality}}</td>
-                    <td>{{item.doctor_schedule_date | date}}</td>
-                    <td>{{item.doctor_schedule_start_time | date:'shortTime'}}-{{item.doctor_schedule_end_time | date:'shortTime'}}</td>
+                    <!-- <td>{{item.doctor_schedule_date | date}}</td>
+                    <td>{{item.doctor_schedule_start_time | date:'shortTime'}}-{{item.doctor_schedule_end_time | date:'shortTime'}}</td> -->
                     <td *ngIf="!isLogged">
                         <p-button label="Get Appointment" styleClass="p-button-sm" [routerLink]="'/auth'" [queryParams]="{type:'patient'}" ></p-button>
                     </td>
@@ -59,26 +59,4 @@
                 </div>
             </div>
         </div> 
-        
-        <p-dialog header="Confirm Your appointement" [(visible)]="triggerValidationForm" [breakpoints]="{'960px': '75vw'}" [style]="{width: '50vw'}"
-            [draggable]="false" [resizable]="false">
-            <div class="flex gap-2 justify-content-between">
-                <div>
-                    <p>Doctor Name: {{selectedDoctor?.doctor[0].name}}</p>
-                    <p>Appointment Time: {{appointmentData.appointment_time | date}}</p>
-                </div>
-                <div>
-                    <p>Reason for Appointment:</p>
-                    <textarea rows="5" cols="30" pInputTextarea [autoResize]="true" [(ngModel)]="appointmentData.reason_for_appointment" required></textarea>
-                </div>
-            </div>
-            <ng-template pTemplate="footer">
-                <p-button (click)="triggerValidationForm=false" label="Cancel" styleClass="p-button"></p-button>
-                <p-button (click)="confirmAppointment()" label="Confirm" styleClass="p-button"></p-button>
-            </ng-template>
-        </p-dialog>
-        
-        
     </div>
-
-<p-toast position="top-right"></p-toast>

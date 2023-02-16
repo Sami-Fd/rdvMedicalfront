@@ -1,6 +1,6 @@
 
-<div class="px-4 py-5 md:px-6 lg:px-8">
-    <div class="grid">
+<div class="px-4 py-5 md:px-6 lg:px-8" >
+    <div class="grid" *ngIf="!isPatient">
         <div class="col-12 md:col-6 lg:col-3">
             <div class="surface-card shadow-2 p-3 border-round">
                 <div class="flex justify-content-between mb-3">
@@ -54,69 +54,65 @@
             </div>
         </div>
     </div>
-    <div *ngIf="isPatient || authService.isAdmin()">
-        <p-table [value]="items" *ngIf="!triggerForm">
-            <ng-template pTemplate="header">
+    <div *ngIf="isPatient || authService.isAdmin()" >
+        <p-table [value]="items" *ngIf="!triggerForm" [scrollable]="true">
+            <!-- <ng-template pTemplate="header">
                 <tr>
                     <th>Doctor Name</th>
                     <th>Education</th>
                     <th>Speciality</th>
+                    <th>Calendar</th>
                     <th>Appointment Date</th>
                     <th>Available Time</th>
                     <th>Action</th>
                 </tr>
-            </ng-template>
+            </ng-template>  -->
             <ng-template pTemplate="body" let-item let-i>
-                <tr>
-                    <td>{{item.doctor[0].name}}</td>
-                    <td>{{item.doctor[0].degree}}</td>
-                    <td>{{item.doctor[0].speciality}}</td>
-                    <td>{{item.doctor_schedule_date | date}}</td>
-                    <td>{{item.doctor_schedule_start_time | date:'shortTime'}}-{{item.doctor_schedule_end_time | date:'shortTime'}}</td>
-                    <td *ngIf="!isLogged">
+                <tr style="height:46px">
+                    <td>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
+                            <p-avatar [image]="env.Static_URL+item.doctor[0].image" styleClass="flex" shape="circle"></p-avatar>
+                        </div>
+                        <p><i class="pi pi-user" style="color: blue;"></i> {{item.doctor[0].name}}</p>
+                        <p><i class="pi pi-briefcase" style="color: blue;"></i> {{item.doctor[0].degree}}</p>
+                        <p><i class="pi pi-book" style="color: blue;"></i> {{item.doctor[0].speciality}}</p>
+                        <p><i class="pi pi-building" style="color: blue;"></i> {{item.doctor[0].address}}</p>
+                        <p><i class="pi pi-phone" style="color: blue;"></i> {{item.doctor[0].phone}}</p>
+                    </td>
+                    <!-- <td>{{item.doctor_schedule_date | date}}</td>
+                    <td>{{item.doctor_schedule_start_time | date:'shortTime'}}-{{item.doctor_schedule_end_time | date:'shortTime'}}</td> -->
+                    <!-- timeslot and date table -->
+                    <td style="display: flex;
+                    height: 18rem; ">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th *ngFor="let scheduleDate of item.doctor_schedule_date" style="width: 7rem;">{{scheduleDate | date}}</th>
+                        </tr>
+                    </thead>
+                    <tbody style="position: absolute;
+                    overflow-x: auto;
+                    height: 12rem;">
+                            <tr style="display: flex;">
+                                <td *ngFor="let timeSlot of item.timeSlot; let idx=index" style="width: 7rem;">
+                                    <p-button *ngFor="let scheduleTime of timeSlot" styleClass="p-button-sm mb-2" (click)="bookAppointment(scheduleTime,item,idx)">
+                                    {{scheduleTime.time | date:'hh:mm a'}}
+                                    </p-button>
+                                </td>
+                            </tr>
+                    </tbody>
+                    </table>
+                </td>
+                <!-- <td *ngIf="!isLogged">
                         <p-button label="Get Appointment" styleClass="p-button-sm" [routerLink]="'/auth'" [queryParams]="{type:'patient'}" ></p-button>
                     </td>
                     <td *ngIf="isLogged">
                         <p-button label="Get Appointment" styleClass="p-button-sm" (click)="appointementDetails(item)"></p-button>
-                    </td>
+                    </td> -->
                 </tr>
             </ng-template>
         </p-table>
-        
-        <!-- appointement calender with button -->
-        
-        <div class="flex justify-content-center align-items-center gap-2" *ngIf="triggerForm">
-            <div>
-            <p-button icon="pi pi-arrow-left" (click)="triggerForm = false"></p-button>
-            </div>
-            <div class="col-12 md:col-6 lg:col-3">
-                <div class="surface-card shadow-2 p-3 border-round">
-                    <div class="flex justify-content-between mb-3">
-                        <div>
-                            <div class="text-900 font-medium text-xl">{{selectedDoctor.doctor[0].name}}</div>
-                        </div>
-                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
-                            <p-avatar [image]="docImgUrl" styleClass="flex" shape="circle"></p-avatar>
-                        </div>
-                    </div>
-                    <p class="text-900 font-medium">Address: {{selectedDoctor.doctor[0].address}}</p>
-                    <p class="text-900">Phone: {{selectedDoctor.doctor[0].phone}}</p>
-                </div>
-            </div>
-            <div class="col-12 md:col-6 lg:col-3 h-15rem overflow-auto">
-                <div class="surface-card shadow-2 p-3 border-round " class="flex gap-2">
-                    <div>
-                        <div>{{selectedDoctor.doctor_schedule_date | date}}</div>
-                        <div *ngFor="let slot of selectedDoctor.timeSlot" class="my-2">
-                            <p-button styleClass="p-button-sm" (click)="bookAppointment(slot,selectedDoctor)">
-                                {{slot.time | date:'hh:mm a'}}
-                            </p-button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> 
-        
+       
         <p-dialog header="Confirm Your appointement" [(visible)]="triggerValidationForm" [breakpoints]="{'960px': '75vw'}" [style]="{width: '50vw'}"
             [draggable]="false" [resizable]="false">
             <div class="flex gap-2 justify-content-between">
@@ -133,9 +129,43 @@
                 <p-button (click)="triggerValidationForm=false" label="Cancel" styleClass="p-button"></p-button>
                 <p-button (click)="confirmAppointment()" label="Confirm" styleClass="p-button"></p-button>
             </ng-template>
-        </p-dialog>
-        
-        
+        </p-dialog> 
     </div>
 </div>
 <p-toast position="top-right"></p-toast>
+
+<!-- 
+          <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
+                            <p-avatar [image]="env.Static_URL+item.doctor[0].image" styleClass="flex" shape="circle"></p-avatar>
+                        </div>
+                        <div class="flex align-items-center">
+                            <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
+                                <i class="pi pi-user text-blue-500 text-xl"></i>
+                            </div>
+                            <p class="p-1">{{item.doctor[0].name}}</p>
+                        </div>
+                        <div class="flex align-items-center">
+                            <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
+                                <i class="pi pi-briefcase text-blue-500 text-xl"></i>
+                            </div>
+                            <p class="p-1">{{item.doctor[0].degree}}</p>
+                        </div>
+                        <div class="flex align-items-center">
+                            <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
+                                <i class="pi pi-book text-blue-500 text-xl"></i>
+                            </div>
+                            <p class="p-1">{{item.doctor[0].speciality}}</p>
+                        </div>
+                        <div class="flex align-items-center">
+                            <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
+                                <i class="pi pi-building text-blue-500 text-xl"></i>
+                            </div>
+                            <p class="p-1">{{item.doctor[0].address}}</p>
+                        </div>
+                        <div class="flex align-items-center">
+                            <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
+                                <i class="pi pi-phone text-blue-500 text-xl"></i>
+                            </div>
+                            <p class="p-1">{{item.doctor[0].phone}}</p>
+                        </div>
+ -->

@@ -63,7 +63,7 @@
     [draggable]="false" [resizable]="false">
     <div class="flex gap-2 justify-content-between">
         <div>
-            <p>Doctor Name: {{selectedAppointment?.doctor_schedule_id?.doctor[0]?.name}}</p>
+            <p>Doctor Name: {{selectedAppointment?.doctor_schedule_id?.doctor?.name}}</p>
             <p>Patient Name : {{selectedAppointment?.patient_id?.first_name}} {{selectedAppointment?.patient_id?.last_name}}</p>
             <p>Appointment Time: {{selectedAppointment?.appointment_time | date:'medium'}}</p>
         </div>

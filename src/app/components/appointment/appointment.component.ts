@@ -116,15 +116,15 @@ export class AppointmentComponent {
 
   appointmentCancel(item:any) {
     let id = item._id;
-    item.doctor_schedule_id.timeSlot = item.doctor_schedule_id.timeSlot.map((elem:any) => elem.time === item.appointment_time ? {time: elem.time, isBooked: false} : elem); 
+    console.log(item);
     this.appointmentService.deleteAppointment(id).subscribe((data:any) => {
       if (data){
         this.triggerAppointmentCancel = false;
         this.dialogAppointment = false;
         this.messageService.add({severity:'success', summary: 'Success', detail: data.message});
-        this.scheduleService.updateSchedule(item.doctor_schedule_id._id, {timeSlot: item.doctor_schedule_id.timeSlot}).subscribe((data:any) => {
-          console.log(data);
-        });
+        // this.scheduleService.updateSchedule(item.doctor_schedule_id._id, {timeSlot: item.doctor_schedule_id.timeSlot}).subscribe((data:any) => {
+        //   console.log(data);
+        // });
         this.ngOnInit();
       }
     });

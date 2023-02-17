@@ -117,17 +117,23 @@
             [draggable]="false" [resizable]="false">
             <div class="flex gap-2 justify-content-between">
                 <div>
-                    <p>Doctor Name: {{selectedDoctor?.doctor[0].name}}</p>
-                    <p>Appointment Time: {{appointmentData.appointment_time | date}}</p>
-                </div>
+                    <p class="p-1"><i class="pi pi-user text-blue-500 text-xl pr-4"></i>{{appointmentData.doctor_schedule_id?.name}}</p>
+                    <p class="p-1"><i class="pi pi-briefcase text-blue-500 text-xl pr-4"></i>{{appointmentData.doctor_schedule_id?.degree}}</p>
+                    <p class="p-1"><i class="pi pi-book text-blue-500 text-xl pr-4"></i>{{appointmentData.doctor_schedule_id?.speciality}}</p>
+                    <p class="p-1"><i class="pi pi-building text-blue-500 text-xl pr-4"></i>{{appointmentData.doctor_schedule_id?.address}}</p>
+                    <p class="p-1"><i class="pi pi-phone text-blue-500 text-xl pr-4"></i>{{appointmentData.doctor_schedule_id?.phone}}</p>
+                    <p class="p-1"><i class="pi pi-clock text-blue-500 text-xl pr-4"></i>{{appointmentData.appointment_time | date:'medium'}}</p>
+            </div>
                 <div>
-                    <p>Reason for Appointment:</p>
+                    <p>Reason for Appointment:<span class="text-red-500 text-xl">*</span></p>
                     <textarea rows="5" cols="30" pInputTextarea [autoResize]="true" [(ngModel)]="appointmentData.reason_for_appointment" required></textarea>
                 </div>
             </div>
             <ng-template pTemplate="footer">
-                <p-button (click)="triggerValidationForm=false" label="Cancel" styleClass="p-button"></p-button>
+                <div class="flex justify-content-between">
+                <p-button (click)="triggerValidationForm=false" label="Cancel" styleClass="p-button p-button-danger"></p-button>
                 <p-button (click)="confirmAppointment()" label="Confirm" styleClass="p-button"></p-button>
+            </div>
             </ng-template>
         </p-dialog> 
     </div>

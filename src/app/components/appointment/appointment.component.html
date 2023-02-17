@@ -63,9 +63,10 @@
     [draggable]="false" [resizable]="false">
     <div class="flex gap-2 justify-content-between">
         <div>
-            <p>Doctor Name: {{selectedAppointment?.doctor_schedule_id?.doctor?.name}}</p>
-            <p>Patient Name : {{selectedAppointment?.patient_id?.first_name}} {{selectedAppointment?.patient_id?.last_name}}</p>
-            <p>Appointment Time: {{selectedAppointment?.appointment_time | date:'medium'}}</p>
+            <p class="p-1"><i class="pi pi-user text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.patient_id?.first_name}} {{selectedAppointment?.patient_id?.last_name}}</p>
+            <p class="p-1"><i class="pi pi-building text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.patient_id?.address}}</p>
+            <p class="p-1"><i class="pi pi-phone text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.patient_id?.phone}}</p>
+            <p class="p-1"><i class="pi pi-clock text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.appointment_time | date:'medium'}}</p>
         </div>
         <div>
             <p>Patient come to Hospital</p>
@@ -77,44 +78,46 @@
         </div>
     </div>
     <ng-template pTemplate="footer">
-        <p-button (click)="triggerUpdateForm=false" label="Cancel" styleClass="p-button"></p-button>
+        <div class="flex justify-content-between">
+        <p-button (click)="triggerUpdateForm=false" label="Cancel" styleClass="p-button p-button-danger"></p-button>
         <p-button (click)="appointmentUpdate(selectedAppointment)" label="Confirm" styleClass="p-button"></p-button>
+        </div>
     </ng-template>
 </p-dialog>
 
 <p-dialog [header]="triggerAppointmentDetails ? 'Appointment Details' : 'Appointment Cancel'" [(visible)]="dialogAppointment" [breakpoints]="{'960px': '75vw'}" [style]="{width: '50vw'}"
     [draggable]="false" [resizable]="false">
         <div *ngIf="isPatient">
-            <img src="http://localhost:3000/{{selectedAppointment?.doctor_id?.image}}" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
-            <p>Doctor Name: {{selectedAppointment?.doctor_id?.name}}</p>
-            <p>Degree: {{selectedAppointment?.doctor_id?.degree}}</p>
-            <p>Speciality: {{selectedAppointment?.doctor_id?.speciality}}</p>
-            <p>Address: {{selectedAppointment?.doctor_id?.address}}</p>
-            <p>Phone: {{selectedAppointment?.doctor_id?.phone}}</p>
-            <p>Appointment Time: {{selectedAppointment?.appointment_time | date:'medium'}}</p>
+            <img [src]="env.Static_URL + selectedAppointment?.doctor_id?.image" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
+            <p class="p-1"><i class="pi pi-user text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.doctor_id?.name}}</p>
+            <p class="p-1"><i class="pi pi-briefcase text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.doctor_id?.degree}}</p>
+            <p class="p-1"><i class="pi pi-book text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.doctor_id?.speciality}}</p>
+            <p class="p-1"><i class="pi pi-building text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.doctor_id?.address}}</p>
+            <p class="p-1"><i class="pi pi-phone text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.doctor_id?.phone}}</p>
+            <p class="p-1"><i class="pi pi-clock text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.appointment_time | date:'medium'}}</p>
         </div>
         <div *ngIf="isDoctor">
-            <img src="http://localhost:3000/{{selectedAppointment?.patient_id?.image}}" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
-            <p>Patient Name: {{selectedAppointment?.patient_id?.first_name}} {{selectedAppointment?.patient_id?.last_name}}</p>
-            <p>Address: {{selectedAppointment?.patient_id?.address}}</p>
-            <p>Phone: {{selectedAppointment?.patient_id?.phone}}</p>
-            <p>Appointment Time: {{selectedAppointment?.appointment_time | date:'medium'}}</p>
+            <img [src]="env.Static_URL + selectedAppointment?.patient_id?.image" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
+            <p class="p-1"><i class="pi pi-user text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.patient_id?.first_name}} {{selectedAppointment?.patient_id?.last_name}}</p>
+            <p class="p-1"><i class="pi pi-building text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.patient_id?.address}}</p>
+            <p class="p-1"><i class="pi pi-phone text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.patient_id?.phone}}</p>
+            <p class="p-1"><i class="pi pi-clock text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.appointment_time | date:'medium'}}</p>
         </div>
         <div *ngIf="authService.isAdmin()" class="flex justify-content-between">
             <div>
-            <img src="http://localhost:3000/{{selectedAppointment?.doctor_id?.image}}" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
-            <p>Doctor Name: {{selectedAppointment?.doctor_id?.name}}</p>
-            <p>Degree: {{selectedAppointment?.doctor_id?.degree}}</p>
-            <p>Speciality: {{selectedAppointment?.doctor_id?.speciality}}</p>
-            <p>Address: {{selectedAppointment?.doctor_id?.address}}</p>
-            <p>Phone: {{selectedAppointment?.doctor_id?.phone}}</p>
+                <img [src]="env.Static_URL + selectedAppointment?.doctor_id?.image" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />    
+                <p class="p-1"><i class="pi pi-user text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.doctor_id?.name}}</p>
+                <p class="p-1"><i class="pi pi-briefcase text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.doctor_id?.degree}}</p>
+                <p class="p-1"><i class="pi pi-book text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.doctor_id?.speciality}}</p>
+                <p class="p-1"><i class="pi pi-building text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.doctor_id?.address}}</p>
+                <p class="p-1"><i class="pi pi-phone text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.doctor_id?.phone}}</p>
             </div>
             <div>
-            <img src="http://localhost:3000/{{selectedAppointment?.patient_id?.image}}" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
-            <p>Patient Name: {{selectedAppointment?.patient_id?.first_name}} {{selectedAppointment?.patient_id?.last_name}}</p>
-            <p>Address: {{selectedAppointment?.patient_id?.address}}</p>
-            <p>Phone: {{selectedAppointment?.patient_id?.phone}}</p>
-            <p>Appointment Time: {{selectedAppointment?.appointment_time | date:'medium'}}</p>
+                <img [src]="env.Static_URL + selectedAppointment?.patient_id?.image" width="32" height="32" style="vertical-align: middle; border-radius: 50%;"  />
+                <p class="p-1"><i class="pi pi-user text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.patient_id?.first_name}} {{selectedAppointment?.patient_id?.last_name}}</p>
+                <p class="p-1"><i class="pi pi-building text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.patient_id?.address}}</p>
+                <p class="p-1"><i class="pi pi-phone text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.patient_id?.phone}}</p>
+                <p class="p-1"><i class="pi pi-clock text-blue-500 text-xl pr-4"></i>{{selectedAppointment?.appointment_time | date:'medium'}}</p>
             </div>
     </div>
     <ng-template pTemplate="footer">

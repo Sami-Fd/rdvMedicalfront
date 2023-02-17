@@ -70,7 +70,7 @@ export class DashboardComponent {
         doctor_comment: "",
     }
     this.triggerValidationForm = true;
-    //console.log(this.selectedDoctor, this.appointmentData);
+    console.log(this.appointmentData);
   }
   confirmAppointment() {
     console.log(this.appointmentData);

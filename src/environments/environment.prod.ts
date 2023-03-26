@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  API_URL: 'https://rdvmedical.up.railway.app/api',
-  Static_URL: 'https://rdvmedical.up.railway.app/'
+  API_URL: 'https://rdvback.onrender.com/api',
+  Static_URL: 'https://rdvback.onrender.com/'
 };
